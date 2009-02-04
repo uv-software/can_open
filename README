@@ -1,0 +1,26 @@
+CANopen Commandline Tool (using berliOS socketCAN).
+
+Copyright (C) 2009 UV Software, Friedrichshafen.
+
+Usage: can_open <interface> [<option>...]
+Options:
+ -g, --gateway=<port>         operate in gateway mode on <port>
+ -b, --baudrate=<baudrate>    bit timing in kbps (default=125)
+ -i, --id=<node-id>           node-id of CANopen Master (default=-1)
+     --net=<network>          set default network number (default=1)
+     --node=<node-id>         set default node-id (default=1)
+     --echo                   echo input stream to output stream
+     --prompt                 prefix input stream with a prompt
+      --syntax                 show input syntax and exit
+ -h, --help                   display this help and exit
+     --version                show version information and exit
+Commands:
+ <command>  ::= ...
+
+This software is freeware without any warranty or support!
+
+-------------------------------------------------------------------------
+Uwe Vogt,  UV Software,  Steinaecker 28,  88048 Friedrichshafen,  Germany
+Fon: +49-7541-6041530, Fax. +49-1803-551809359, Cell fon: +49-170-3801903
+E-Mail: uwe.vogt@uv-software.de, Internet URL: http://www.uv-software.de/
+
