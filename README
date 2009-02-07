@@ -18,9 +18,9 @@ Examples:
  1. Local mode:     can_open <socket-can> --prompt
  2.1 Gateway mode:  can_open <socket-can> --gateway <port> --echo
  2.2 Remote mode:   can_open <ip-addr>:<port> --prompt
-In local mode and in remot mode press ^D to leave the interactive input.
-In gateway mode press ^C to close the close the port and exit the program.
- 
+In local mode and in remote mode press ^D to leave the interactive input.
+In gateway mode press ^C to close the port and exiting the program.
+
 1. SDO access commands
 
 1.1 Upload SDO command
