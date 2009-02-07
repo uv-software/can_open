@@ -1,0 +1,22 @@
+To Do and Wish List for the CANopen Commandline Tool
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+o New commands (user defined):
+
+  exec <filename>
+  exit
+
+o Comments for batch mode
+
+  E.g. '#' until end of line.
+
+o Plastic surgery
+
+  - Eliminate all compiler warning.
+  - Set svn:keywords property
+  - Cross compilation for MPC
+
+o Release program under GPL
+
+o To be continued...
+
