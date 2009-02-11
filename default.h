@@ -2,7 +2,7 @@
  *
  *      Projekt   :  All over the world!
  *
- *      Zweck     :  Spracherweiterungen für C/C++.
+ *      Zweck     :  Spracherweiterungen fÃ¼r C/C++.
  *
  *      Copyright :  (c) 1993-96 by Uwe Vogt, Berlin.
  *                   (c) 2002-2009, UV Software, Friedrichshafen.
@@ -25,11 +25,11 @@
  *      In dieser Include-Datei sind Definitionen zur Spracherweiterung der
  *      Programmiersprache 'C' und 'C++' getroffen.
  *
- *      Die Datei ist mit einer #include-Anweisung jedem Modul hinzuzufügen!
+ *      Die Datei ist mit einer #include-Anweisung jedem Modul hinzuzufÃ¼gen!
  */
 
 
-/* ****************  Änderungsbeschreibung  **********************************
+/* ****************  Ã„nderungsbeschreibung  **********************************
  *
  *	$Log: default.h $
  *	Revision 4.1  2009/01/01 12:00:00  vogt
@@ -37,7 +37,7 @@
  *	Copyright changed to UV Software, Friedirchshafen
  *
  *	Revision 3.1  1996/08/09 21:19:00  vogt
- *	'C/C++' Erweiterungen fr das Microsoft Windows SDK.
+ *	'C/C++' Erweiterungen fÂr das Microsoft Windows SDK.
  *
  *	Revision 1.1  1993/08/18 21:09:00  vogt
  *	Initial revision
@@ -45,15 +45,15 @@
  *
  *      Version 1 vom 18.08.93:
  *
- *              'C' Syntaxerweiterung für Microsoft QuickC Compiler.
+ *              'C' Syntaxerweiterung fÃ¼r Microsoft QuickC Compiler.
  *
  *      Version 2 vom 18.01.94:
  *
- *              'C' Syntaxerweiterung für beliebigen ANSI 'C' Compiler.
+ *              'C' Syntaxerweiterung fÃ¼r beliebigen ANSI 'C' Compiler.
  *
  *	Version 3 vom 27.06.96:
  *
- *		'C/C++' Erweiterungen nach den Konventionen für das Microsoft
+ *		'C/C++' Erweiterungen nach den Konventionen fÃ¼r das Microsoft
  *		Windows SDK; (siehe auch '...\include\windows.h').
  *
  *      Version 3.1 vom 09.08.96:
@@ -220,15 +220,27 @@ typedef void FAR*           LPVOID;
  *#define HILOBYTE(dword)		(unsigned char)(((unsigned long)(dword) & 0x00FF0000) >> 16)
  *#define HIHIBYTE(dword)		(unsigned char)(((unsigned long)(dword) & 0xFF000000) >> 24)
  */
-#define LOBYTE(value)					*( (unsigned char*) &value)
-#define HIBYTE(value)					*(((unsigned char*) &value) + 1)
-#define LOWORD(value)					*( (unsigned short*) &value)
-#define HIWORD(value)					*(((unsigned short*) &value) + 1)
+#ifdef _BIG_ENDIAN
+ #define HIBYTE(value)					*( (unsigned char*) &value)
+ #define LOBYTE(value)					*(((unsigned char*) &value) + 1)
+ #define HIWORD(value)					*( (unsigned short*) &value)
+ #define LOWORD(value)					*(((unsigned short*) &value) + 1)
 
-#define LOLOBYTE(value)				*( (unsigned char*) &value)
-#define LOHIBYTE(value)				*(((unsigned char*) &value) + 1)
-#define HILOBYTE(value)				*(((unsigned char*) &value) + 2)
-#define HIHIBYTE(value)				*(((unsigned char*) &value) + 3)
+ #define HIHIBYTE(value)				*( (unsigned char*) &value)
+ #define HILOBYTE(value)				*(((unsigned char*) &value) + 1)
+ #define LOHIBYTE(value)				*(((unsigned char*) &value) + 2)
+ #define LOLOBYTE(value)				*(((unsigned char*) &value) + 3)
+#else
+ #define LOBYTE(value)					*( (unsigned char*) &value)
+ #define HIBYTE(value)					*(((unsigned char*) &value) + 1)
+ #define LOWORD(value)					*( (unsigned short*) &value)
+ #define HIWORD(value)					*(((unsigned short*) &value) + 1)
+
+ #define LOLOBYTE(value)				*( (unsigned char*) &value)
+ #define LOHIBYTE(value)				*(((unsigned char*) &value) + 1)
+ #define HILOBYTE(value)				*(((unsigned char*) &value) + 2)
+ #define HIHIBYTE(value)				*(((unsigned char*) &value) + 3)
+#endif
 
 #define BYTES2WORD(low,high)	(((unsigned int)((unsigned char)(low)))  << 0) | \
 				(((unsigned int)((unsigned char)(high))) << 8)

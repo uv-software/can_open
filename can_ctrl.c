@@ -4,7 +4,7 @@
  *
  *	purpose   :  CAN Controller Interface (socketCAN)
  *
- *	copyright :  (c) 2007, UV Software, Friedrichshafen
+ *	copyright :  (c) 2007-2009, UV Software, Friedrichshafen
  *
  *	compiler  :  GCC - GNU C Compiler (Linux Kernel 2.6)
  *
@@ -53,17 +53,13 @@ static char _id[] = "$Id$";
 #include <net/if.h>
 
 #include <linux/can.h>
-#include <linux/can/raw.h>
-#include <linux/can/ioctl.h>
-#include <linux/can/error.h>
-#include <linux/can/version.h>
 
 
 /*  -----------  defines  --------------------------------------------------
  */
 
 #ifndef OK
-#define OK						  0		// Positives Ergebnis, heißt kein Fehler!
+#define OK						  0		// Positives Ergebnis, heiÃt kein Fehler!
 #endif
 #define CAN_ERROR			     -10000	// socketCAN Fehler ('errno' gesetzt)
 #define CAN_FATAL			     -99	// Schwerwiegender Fehler
@@ -114,7 +110,7 @@ static int can_read_socket(struct can_frame *msg);
 
 BYTE can_baudrate = -1;					// index to the bit-timing table
 
-static int   fd = -1;					// file descriptor (it´s a socket)
+static int   fd = -1;					// file descriptor (itÂ´s a socket)
 static char  ifname[IFNAMSIZ] = "";		// interface name
 static int   family = PF_CAN;			// protocol family
 static int   type = SOCK_RAW;			// communication semantics

@@ -596,7 +596,7 @@ void sigterm(int signo)
 
 void version(FILE *stream, char *program)
 {
-	int rev; if(sscanf(_rev, "$Rev$", &rev) != 1) rev = 0;
+	int rev; if(sscanf(_rev, "\044Rev: %i \044", &rev) != 1) rev = 0;
 	
 	fprintf(stream, "%s (CANopen using socketCAN), version %s.%i of %s\n%s.\n\n",
 							     program,__version__, rev,__DATE__,__copyright__);
@@ -632,7 +632,7 @@ void usage(FILE *stream, char *program)
 
 void syntax(FILE *stream, char *program)
 {
-	int rev; if(sscanf(_rev, "$Rev$", &rev) != 1) rev = 0;
+	int rev; if(sscanf(_rev, "\044Rev: %i \044", &rev) != 1) rev = 0;
 	
 	fprintf(stream, "Syntax for %s (CANopen Commandline Tool):\n\n", program);
 	cop_tcp_syntax(stream);

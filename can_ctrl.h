@@ -4,7 +4,7 @@
  *
  *	purpose   :  CAN Controller Interface (socketCAN)
  *
- *	copyright :  (c) 2007, UV Software, Friedrichshafen
+ *	copyright :  (c) 2007-2009, UV Software, Friedrichshafen
  *
  *	compiler  :  GCC - GNU C Compiler (Linux Kernel 2.6)
  *
@@ -136,7 +136,19 @@
  typedef union _can_state				// CAN Status-register:
  {
    unsigned char byte;					//   byte access
-   struct {								//   bit access:
+#ifdef _BIG_ENDIAN
+   struct {								//   bit access (MSB first):
+     unsigned char can_stopped : 1;		//     CAN controller stopped
+     unsigned char bus_off : 1;			//     Busoff status
+     unsigned char warning_level : 1;	//     Error warning status
+     unsigned char bus_error : 1;		//     Bus error (LEC)
+     unsigned char transmitter_busy : 1;//     Transmitter busy
+     unsigned char receiver_empty : 1;	//     Receiver empty
+     unsigned char message_lost : 1;	//     Message lost
+     unsigned char queue_overrun : 1;	//     Event-queue overrun
+   } b;
+#else
+   struct {								//   bit access (LSB first):
      unsigned char queue_overrun : 1;	//     Event-queue overrun
      unsigned char message_lost : 1;	//     Message lost
      unsigned char receiver_empty : 1;	//     Receiver empty
@@ -146,6 +158,7 @@
      unsigned char bus_off : 1;			//     Busoff status
      unsigned char can_stopped : 1;		//     CAN controller stopped
    } b;
+#endif
  } CAN_STATE;
 #endif
 
