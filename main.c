@@ -35,15 +35,17 @@
  *
  *	CANopen Commandline Tool (using berliOS socketCAN)
  *
- *	<command-line>  ::=  <...>
- *
- *
+ *	Enter option --syntax at the commandline to get a syntax summery.
  *	For information about socketCAN see "http://socketcan.berlios.de/"
+ *
+ *	See also:
+ *	[DS301] CANopen application layer and communication profile, version 4.02
+ *	[DS309] Interfacing CANopen with TCP/IP, part 1 and 3, version 1.1
  */
 
 static const char* __copyright__ = "Copyright (C) 2008-2009 UV Software, Friedrichshafen";
-static const char* __version__   = "0.1.1";
-
+static const char* __version__   = "0.2";
+static const char  _rev[] = "$Rev$";
 
 /* ***	includes  ***
  */
@@ -491,7 +493,7 @@ int main(int argc, char *argv[])
 	case MODE_REMOTE:
 		memset(&addr, 0, sizeof(addr));
 		addr.sin_family = AF_INET;
-		addr.sin_addr.s_addr = ip1 + ip2 * (256) + ip3 * (256*256) + ip4 * (256*256*256);
+		addr.sin_addr.s_addr = htonl((unsigned long)(ip1 * (256*256*256) + ip2 * (256*256) + ip3 * (256) + ip4));
 		addr.sin_port = htons((unsigned short)port);
 		if((client = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
 			perror("+++ error(socket)");
@@ -594,8 +596,10 @@ void sigterm(int signo)
 
 void version(FILE *stream, char *program)
 {
-	fprintf(stream, "%s (CANopen using socketCAN), version %s of %s\n%s.\n\n",
-							   program,__version__,__DATE__,__copyright__);
+	int rev; if(sscanf(_rev, "$Rev$", &rev) != 1) rev = 0;
+	
+	fprintf(stream, "%s (CANopen using socketCAN), version %s.%i of %s\n%s.\n\n",
+							     program,__version__, rev,__DATE__,__copyright__);
 /* *** GPL *** **
 	fprintf(stream, "This is free software. You may redistribute copies of it under the terms of\n");
 	fprintf(stream, "the GNU General Public License <http://www.gnu.org/licenses/gpl.html>.\n");
@@ -628,11 +632,13 @@ void usage(FILE *stream, char *program)
 
 void syntax(FILE *stream, char *program)
 {
+	int rev; if(sscanf(_rev, "$Rev$", &rev) != 1) rev = 0;
+	
 	fprintf(stream, "Syntax for %s (CANopen Commandline Tool):\n\n", program);
 	cop_tcp_syntax(stream);
 	fprintf(stream, "(%s)\n\n", cop_tcp_version());
-	fprintf(stream, "%s (CANopen using socketCAN), version %s of %s\n%s.\n\n",
-							   program,__version__,__DATE__,__copyright__);
+	fprintf(stream, "%s (CANopen using socketCAN), version %s.%i of %s\n%s.\n\n",
+							     program,__version__, rev,__DATE__,__copyright__);
 }
 
 ssize_t readline(int fd, char *buf, size_t nbyte)
