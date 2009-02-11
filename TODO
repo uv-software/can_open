@@ -10,13 +10,16 @@ o Comments for batch mode
 
   E.g. '#' until end of line.
 
-o Plastic surgery
+o CANopen library functions:
 
-  - Eliminate all compiler warning.
-  - Set svn:keywords property
-  - Cross compilation for MPC
-
+  SDO block transfer (acc. CiA DS-301, V4.0)
+  PDO handling (configuration + transmission)
+  NMT health (node guarding + heartbeat)
+  Events (e.g. EMCY consumer, ...)
+  
 o Release program under GPL
+
+  We're Only In It For The Money!
 
 o To be continued...
 
