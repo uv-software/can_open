@@ -1,4 +1,4 @@
-/*	-- $Header: P:/source/c/RCS/base64.h 1.2 2009/02/05 15:07:14 vogt Sav $ --
+/*	-- $Header: P:/source/c/RCS/base64.h 1.3 2009/02/18 10:06:29 saturn Sav $ --
  *
  *	projekt   :  UV Software.
  *
@@ -60,6 +60,9 @@
  *	-----------  history  ---------------------------------------------------
  *
  *	$Log: base64.h $
+ *	Revision 1.3  2009/02/18 10:06:29  saturn
+ *	The functions now return the number of bytes/chars in the output buffer.
+ *
  *	Revision 1.2  2009/02/05 15:07:14  vogt
  *	An annoying waring eliminated.
  *
@@ -75,8 +78,8 @@
 /*  -----------  prototypes  -----------------------------------------------
  */
 
-void base64_encode(unsigned char *input, int length, unsigned char *output, int nbyte);
-void base64_decode(unsigned char *input, int length, unsigned char *output, int nbyte);
+int base64_encode(unsigned char *input, int length, unsigned char *output, int nbyte);
+int base64_decode(unsigned char *input, int length, unsigned char *output, int nbyte);
 
 char* base64_version();
 /*

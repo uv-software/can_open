@@ -3,6 +3,7 @@ To Do and Wish List for the CANopen Commandline Tool
 
 o New commands (user defined):
 
+  read [queue] status
   exec <filename>
   exit
 

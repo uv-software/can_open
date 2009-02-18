@@ -1,4 +1,4 @@
-/*	-- $Header: P:/source/c/RCS/base64.c 1.2 2009/02/05 15:02:06 vogt Sav $ --
+/*	-- $Header: P:/source/c/RCS/base64.c 1.3 2009/02/18 10:06:29 saturn Sav $ --
  *
  *	projekt   :  UV Software.
  *
@@ -25,6 +25,9 @@
  *	-----------  history  ---------------------------------------------------
  *
  *	$Log: base64.c $
+ *	Revision 1.3  2009/02/18 10:06:29  saturn
+ *	The functions now return the number of bytes/chars in the output buffer.
+ *
  *	Revision 1.2  2009/02/05 15:02:06  vogt
  *	An annoying waring eliminated.
  *
@@ -33,7 +36,7 @@
  *
  */
 
-static char _id[] = "$Id: base64.c 1.2 2009/02/05 15:02:06 vogt Sav $";
+static char _id[] = "$Id: base64.c 1.3 2009/02/18 10:06:29 saturn Sav $";
 
 
 /*  -----------  includes  -------------------------------------------------
@@ -54,6 +57,11 @@ static char _id[] = "$Id: base64.c 1.2 2009/02/05 15:02:06 vogt Sav $";
                   ((x) >= '0'? (x)+52-'0' : \
                   ((x) == '+'? 62 : \
                   ((x) == '/'? 63 : 0)))))
+#define BASE64(x) ('0' <= (x) && (x) <= '9') || \
+                  ('a' <= (x) && (x) <= 'z') || \
+                  ('A' <= (x) && (x) <= 'Z') || \
+                  ((x) == '+') || \
+                  ((x) == '/')
 
 /*  -----------  types  ----------------------------------------------------
  */
@@ -72,26 +80,46 @@ static const char base64[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwx
 /*  -----------  functions  ------------------------------------------------
  */
 
-void base64_encode(unsigned char *input, int length, unsigned char *output, int nbyte)
+int base64_encode(unsigned char *input, int length, unsigned char *output, int nbyte)
 {
-	if(nbyte > 3)
+	int n = nbyte;
+	
+	if(nbyte > 3) {
 		output[3] = (unsigned char)(length > 2 ? base64[input[2] & 0x3F] : '=');
-	if(nbyte > 2)
+		n = length > 2 ? n : 3;
+	}
+	if(nbyte > 2) {
 		output[2] = (unsigned char)(length > 1 ? base64[((input[1] & 0x0F) << 2) | ((input[2] & 0xC0) >> 6)] : '=');
-	if(nbyte > 1)
+		n = length > 1 ? n : 2;
+	}
+	if(nbyte > 1) {
 		output[1] = (unsigned char)(length > 0 ? base64[((input[0] & 0x03) << 4) | (length > 1 ? ((input[1] & 0xF0) >> 4) : 0)] : '=');
-	if(nbyte > 0)
+		n = length > 0 ? n : 1;
+	}
+	if(nbyte > 0) {
 		output[0] = (unsigned char)(length > 0 ? base64[input[0] >> 2] : '=');
+		n = length > 0 ? n : 0;
+	}
+	return n;
 }
 
-void base64_decode(unsigned char *input, int length, unsigned char *output, int nbyte)
+int base64_decode(unsigned char *input, int length, unsigned char *output, int nbyte)
 {
-	if(nbyte > 0)
+	int n = 0;
+	
+	if(nbyte > 0) {
+		n += ((length > 0) && BASE64(input[0])) ? 1 : 0;
 		output[0] = (unsigned char)((length > 0 ? BYTE64(input[0]) << 2 : 0) | (length > 1 ? BYTE64(input[1]) >> 4 : 0));
-	if(nbyte > 1)
+	}
+	if(nbyte > 1) {
+		n += ((length > 1) && BASE64(input[1])) ? ((length == 2) && ((BYTE64(input[1]) & 0x0F) == 0x00) ? 0 : 1) : 0;
 		output[1] = (unsigned char)((length > 1 ? BYTE64(input[1]) << 4 : 0) | (length > 2 ? BYTE64(input[2]) >> 2 : 0));
-	if(nbyte > 1)
-		output[2] = (unsigned char)((length > 2 ? ((BYTE64(input[2]) << 6) & 0xC0) : 0) | (length > 3 ? BYTE64(input[3]) : 0));
+	}
+	if(nbyte > 2) {
+		n += ((length > 2) && BASE64(input[2])) ? ((length == 3) && ((BYTE64(input[2]) & 0x03) == 0x00) ? 0 : 1) : 0;
+		output[2] = (unsigned char)((length > 2 ? BYTE64(input[2]) << 6 : 0) | (length > 3 ? BYTE64(input[3]) : 0));
+	}
+	return n;
 }
 
 /*  -----------  revision control  -----------------------------------------

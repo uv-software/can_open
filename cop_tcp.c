@@ -1755,25 +1755,26 @@ static int ascii2domain(char *line, int *pos, unsigned char *buffer, int *length
 		return 0;
 	for(; WHITESPACE(line[*pos]); *pos += 1)
 		;
-	for(n = 0, *length = 0; BASE64(line[*pos]) || line[*pos] == '='; *pos += 1, n++) {
+	for(n = 0, *length = 0; BASE64(line[*pos]) /*|| line[*pos] == '='*/; *pos += 1, n++) {
 		if(n == 4) {
-			base64_decode((unsigned char*)&line[*pos-4], 4, &buffer[*length], (*length + 3) < nbyte ? 3 : nbyte - *length);
-			*length += (*length + 3) < nbyte ? 3 : nbyte - *length;
+			*length += base64_decode((unsigned char*)&line[*pos-4], 4, &buffer[*length], (*length + 3) < nbyte ? 3 : nbyte - *length);
 			n = 0;
 		}
 	}
+	if(n == 4) {
+		*length += base64_decode((unsigned char*)&line[*pos-4], 4, &buffer[*length], (*length + 3) < nbyte ? 3 : nbyte - *length);
+	}
 	if(n == 3) {
-		base64_decode((unsigned char*)&line[*pos-3], 3, &buffer[*length], (*length + 3) < nbyte ? 3 : nbyte - *length);
-		*length += (*length + 3) < nbyte ? 3 : nbyte - *length;
+		*length += base64_decode((unsigned char*)&line[*pos-3], 3, &buffer[*length], (*length + 3) < nbyte ? 3 : nbyte - *length);
 	}
 	if(n == 2) {
-		base64_decode((unsigned char*)&line[*pos-2], 2, &buffer[*length], (*length + 2) < nbyte ? 2 : nbyte - *length);
-		*length += (*length + 2) < nbyte ? 2 : nbyte - *length;
+		*length += base64_decode((unsigned char*)&line[*pos-2], 2, &buffer[*length], (*length + 2) < nbyte ? 2 : nbyte - *length);
 	}
 	if(n == 1) {
-		base64_decode((unsigned char*)&line[*pos-1], 1, &buffer[*length], (*length + 1) < nbyte ? 1 : nbyte - *length);
-		*length += (*length + 1) < nbyte ? 1 : nbyte - *length;
+		*length += base64_decode((unsigned char*)&line[*pos-1], 1, &buffer[*length], (*length + 1) < nbyte ? 1 : nbyte - *length);
 	}
+	for(; line[*pos] == '='; *pos += 1)
+		;
 	return 1;
 }
 
