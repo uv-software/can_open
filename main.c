@@ -47,7 +47,6 @@ static const char* __copyright__ = "Copyright (C) 2008-2009 UV Software, Friedri
 static const char* __version__   = "0.2";
 static const char  _rev[] = "$Rev$";
 
-
 /* ***	includes  ***
  */
 

@@ -77,7 +77,7 @@ In gateway mode press ^C to close the port and exiting the program.
 
 3.2 Stop node command
 
-<stop-node-request>  ::= '['<sequence>']' [[<net>] <node>] "start"
+<stop-node-request>  ::= '['<sequence>']' [[<net>] <node>] "stop"
 
 <stop-node-response> ::= '['<sequence>']' "OK" |
                          '['<sequence>']' "Error:" <error-code>
@@ -137,9 +137,9 @@ In gateway mode press ^C to close the port and exiting the program.
 
 5. CANopen interface configuration commands
 
-5.1 Initialize gate way command
+5.1 Initialize gateway command
 
-<initialize-request>  ::= '['<sequence>']' [<net>] "init <baudrate-index>
+<initialize-request>  ::= '['<sequence>']' [<net>] "init" <baudrate-index>
 
 <initialize-response> ::= '['<sequence>']' "OK" |
                           '['<sequence>']' "Error:" <error-code>
@@ -150,7 +150,7 @@ In gateway mode press ^C to close the port and exiting the program.
 
 <store-configuration-response> ::= '['<sequence>']' "Error: 100"
 
-5.3 Retore configuration command
+5.3 Restore configuration command
 
 <restore-configuration-request>  ::= '['<sequence>']' [<net>] "restore" ["CFG" | "PDO" | "SDO" | "NMT"]
 
@@ -188,33 +188,26 @@ In gateway mode press ^C to close the port and exiting the program.
 
 <get-version-request>  ::= '['<sequence>']' "info" "version"
 
-<get-version-response> ::= '['<sequence>']' <vendor-id> <product-code> <revison-number> <serial-number> <gatyway-class> <protocol-version> <implementation-class> |
+<get-version-response> ::= '['<sequence>']' <vendor-id> <product-code> <revision-number> <serial-number> <gateway-class> <protocol-version> <implementation-class> |
                            '['<sequence>']' "Error:" <error-code>
 
 7. Vendor-specific commands
 
-7.1 Get information command
-
-<get-information-request>  ::= '['<sequence>']' [<net>] "info" ("hardware" | "firmware" | "software" | "copyright")
-
-<get-information-response> ::= '['<sequence>']' <string> |
-                               '['<sequence>']' "Error:" <error-code>
-
-7.2 Send CAN message command
+7.1 Send CAN message command
 
 <send-message-request>  ::= '['<sequence>']' [<net>] "send" <cob-id> <length> {<value>}*
 
 <send-message-response> ::= '['<sequence>']' "OK" |
                             '['<sequence>']' "Error:" <error-code>
 
-7.3 Request CAN message command
+7.2 Request CAN message command
 
-<remote-message-request>  ::= '['<sequence>']' [<net>] "send" <cob-id> "rtr"
+<remote-message-request>  ::= '['<sequence>']' [<net>] "send" <cob-id> "rtr" <length>
 
 <remote-message-response> ::= '['<sequence>']' <length> {<value>}* |
                               '['<sequence>']' "Error:" <error-code>
 
-7.4 Read CAN message queue command
+7.3 Read CAN message queue command
 
 <read-message-request>  ::= '['<sequence>']' [<net>] "recv"
 
@@ -222,16 +215,23 @@ In gateway mode press ^C to close the port and exiting the program.
                             '['<sequence>']' "OK" |
                             '['<sequence>']' "Error:" <error-code>
 
-7.5 Wait command
+7.4 Wait command
 
 <wait-request>  ::= '['<sequence>']' [<net>] "wait" <milliseconds>
 
 <wait-response> ::= '['<sequence>']' "OK" |
                     '['<sequence>']' "Error:" <error-code>
 
+7.5 Get information command
+
+<get-information-request>  ::= '['<sequence>']' [<net>] "info" ("hardware" | "firmware" | "software" | "copyright")
+
+<get-information-response> ::= '['<sequence>']' <string> |
+                               '['<sequence>']' "Error:" <error-code>
+
 8. Miscellaneous
 
-8.1 Supported datatypes
+8.1 Supported data types
 
 "i8"  = 8-bit signed integer value
 "i16" = 16-bit signed integer value
